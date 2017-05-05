@@ -1,0 +1,16 @@
+{
+  "name": "front-end",
+  "version": "1.0.0",
+  "description": "Frontend dictionary",
+  "main": "scripts/index.js",
+  "dependencies": {
+    "bower": "^1.8.0",
+    "http-server": "^0.10.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Marcos de Matos Machado",
+  "license": "ISC"
+}
