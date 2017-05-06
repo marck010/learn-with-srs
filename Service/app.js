@@ -12,7 +12,7 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, ApiKeyPersona, SessionKey");
     res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
     if (mongoose.connection.readyState == 3 || mongoose.connection.readyState == 0) {
-        mongoose.connect('mongodb://localhost:27017/dictionary', function(error) {
+        mongoose.connect('mongodb://172.18.0.1:27017/dictionary', function(error) {
             if (error) {
                 next(error)
                 console.log(error);
