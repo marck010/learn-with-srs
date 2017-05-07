@@ -1,6 +1,8 @@
 var app = angular.module('App', []);
 
 app.controller('AppController', function($scope, $http) {
+    var host = "http://192.168.0.110:8000";
+
     $scope.dictionary = {};
     $scope.dictionary.newWork = {
         translate: {},
@@ -13,7 +15,7 @@ app.controller('AppController', function($scope, $http) {
 
     function load() {
 
-        $http.get('http://localhost:8000/word/list').then(function(data) {
+        $http.get(host+'/word/list').then(function(data) {
 
             $scope.dictionary.words = data.data;
 
@@ -31,9 +33,10 @@ app.controller('AppController', function($scope, $http) {
 
         $http({
             method: 'POST',
-            url: 'http://localhost:8000/word/insert',
+            url: host+'/word/insert',
             data: object
         }).then(function(data) {
+            $scope.dictionary.word = "";
             $scope.dictionary.newWork.translates = [];
             load();
         }).catch(function(data) {
@@ -53,7 +56,7 @@ app.controller('AppController', function($scope, $http) {
 
         $http({
             method: 'PUT',
-            url: 'http://localhost:8000/word/update',
+            url: host+'/word/update',
             data: object
         }).then(function(data) {
             $scope.dictionary.alterWork.translates = [];
@@ -69,7 +72,7 @@ app.controller('AppController', function($scope, $http) {
 
         $http({
             method: 'DELETE',
-            url: 'http://localhost:8000/word/delete',
+            url: host+'/word/delete',
             params: { _id: _id }
         }).then(function(data) {
             load();
