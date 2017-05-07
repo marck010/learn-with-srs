@@ -22,6 +22,20 @@ app.controller('AppController', function($scope, $http) {
         })
     }
 
+    $scope.dictionary.hide = function() {
+         $scope.dictionary.words.forEach(function(word){
+             word.hide = true;
+         }) 
+    };
+    
+
+    $scope.dictionary.show = function() {
+         $scope.dictionary.words.forEach(function(word){
+             word.hide = false ;
+         }) 
+    };
+    
+
     $scope.dictionary.insert = function() {
 
         var object = {

@@ -50,56 +50,70 @@
                             <tr>
                                 <th>Word</th>
                                 <th>Date</th>
-                                <th>Translate</th>
+                                <th>Translate
+                                    <span ng-click="dictionary.hide()" style="cursor:pointer" class="label label-danger">Hide</span>
+                                    <span ng-click="dictionary.show()" style="cursor:pointer" class="label label-success">Show</span>
+                                </th>
                                 <th>Delete Word</th>
                             </tr>
                             <tr clas="row" ng-repeat="word in dictionary.words">
                                 <td class="col-md-3">
-                                    <span>{{word.word}}</span>
+                                    <span ng-show="!word.edit">{{word.word}}</span>
+
+                                    <div ng-show="word.edit">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" ng-model="word.word">
+                                        </div>
+                                    </div>
                                 </td>
-                                <td class="col-md-3">
+                                <td class="col-md-2">
                                     <span>{{word.date}}</span>
                                 </td>
                                 <td class="col-md-4">
-                                    <div ng-repeat="translate in word.translates" ng-click="translate.edit = true ; word.edit = true ">
-                                        <span ng-show="!translate.edit">{{translate.translate + " - " }}<strong>{{translate.complement}}</strong></span>
+                                    <button type="button" ng-click="word.hide=!word.hide" class="btn btn-primary btn-xs">{{word.hide? "Show":"Hide"}}</button>
+                                    <div ng-show="!word.hide">
+                                        <div ng-repeat="translate in word.translates">
+                                            <span ng-show="!word.edit">{{translate.translate + " - " }}<strong>{{translate.complement}}</strong></span>
 
-                                        <div ng-show="translate.edit">
-                                            <div class="form-group">
-                                                <input class="form-control" type="text" ng-model="translate.translate">
-                                            </div>
-                                            <div class="form-group">
-                                                <input class="form-control" type="text" ng-model="translate.complement">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <br/>
-                                    <div ng-show="word.edit">
-                                        <div class="row">
-                                            <div class="panel panel-primary">
-                                                <div class="panel-body">
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" ng-model="dictionary.alterWork.translate.translate">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <input class="form-control" type="text" ng-model="dictionary.alterWork.translate.complement">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button type="button" ng-click="word.translate = dictionary.alterWork.translate; dictionary.add(word);" class="btn btn-default">+</button>
-                                                    </div>
+                                            <div ng-show="word.edit">
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" ng-model="translate.translate">
+                                                </div>
+                                                <div class="form-group">
+                                                    <input class="form-control" type="text" ng-model="translate.complement">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-2 col-md-offset-9">
-                                                <button type="button" ng-click="dictionary.update(word)" class="btn btn-default">OK</button>
+                                        <br/>
+                                        <div ng-show="word.edit">
+                                            <div class="row">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-body">
+                                                        <div class="form-group">
+                                                            <input class="form-control" type="text" ng-model="dictionary.alterWork.translate.translate">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input class="form-control" type="text" ng-model="dictionary.alterWork.translate.complement">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <button type="button" ng-click="word.translate = dictionary.alterWork.translate; dictionary.add(word);" class="btn btn-default">+</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2 col-md-offset-9">
+                                                    <button type="button" ng-click="dictionary.update(word)" class="btn btn-default">OK</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
 
+
                                 </td>
-                                <td class="col-md-2"> 
-                                    <a ng-href="#" ng-click="dictionary.delete(word._id)"> Excluir </a>
+                                <td class="col-md-3">
+                                    <button type="button" ng-click="dictionary.delete(word._id)" class="btn btn-danger btn-xs">Excluir</button>
+                                    <button type="button" ng-click="word.edit = !word.edit"  class="btn btn-primary btn-xs"> Editar</button>
                                 </td>
                             </tr>
 
