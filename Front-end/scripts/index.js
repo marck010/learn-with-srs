@@ -79,7 +79,7 @@ app.controller('AppController', function($scope, $http) {
     }
 
     $scope.dictionary.add = function(word) {
-        if (word.translate.translate && word.translate.complement) {
+        if (word.translate.translate) {
             word.translates.push({
                 translate: word.translate.translate,
                 complement: word.translate.complement
