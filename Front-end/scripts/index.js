@@ -4,7 +4,7 @@ app.controller('AppController', function($scope, $http) {
     var service_host = "http://192.168.0.110:8000";
 
     $scope.dictionary = {};
-    $scope.dictionary.newWork = {
+    $scope.dictionary.newWord = {
         translate: {},
         translates: []
     };
@@ -15,7 +15,7 @@ app.controller('AppController', function($scope, $http) {
 
     function load() {
 
-        $http.get(service_host+'/word/list').then(function(data) {
+        $http.get(service_host + '/word/list').then(function(data) {
 
             $scope.dictionary.words = data.data;
 
@@ -23,35 +23,51 @@ app.controller('AppController', function($scope, $http) {
     }
 
     $scope.dictionary.hide = function() {
-         $scope.dictionary.words.forEach(function(word){
-             word.hide = true;
-         }) 
+        $scope.dictionary.words.forEach(function(word) {
+            word.hide = true;
+        })
     };
-    
+
 
     $scope.dictionary.show = function() {
-         $scope.dictionary.words.forEach(function(word){
-             word.hide = false ;
-         }) 
+        $scope.dictionary.words.forEach(function(word) {
+            word.hide = false;
+        })
     };
-    
+
 
     $scope.dictionary.insert = function() {
+
 
         var object = {
             obj: {
                 word: $scope.dictionary.word,
-                translates: $scope.dictionary.newWork.translates
+                translates: $scope.dictionary.newWord.translates
             }
+        }
+
+        var translateValid = false;
+
+        if (object.obj.translates.length > 0) {
+            translatesValidos = object.obj.translates.filter(function(item) {
+                return !!item.translate;
+            });
+
+            translateValid = translatesValidos.length > 0;
+        }
+
+        if (!object.obj.word || !translateValid) {
+            alert("Dados invalidos.");
+            return;
         }
 
         $http({
             method: 'POST',
-            url: service_host+'/word/insert',
+            url: service_host + '/word/insert',
             data: object
         }).then(function(data) {
             $scope.dictionary.word = "";
-            $scope.dictionary.newWork.translates = [];
+            $scope.dictionary.newWord.translates = [];
             load();
         }).catch(function(data) {
             alert(data)
@@ -70,7 +86,7 @@ app.controller('AppController', function($scope, $http) {
 
         $http({
             method: 'PUT',
-            url: service_host+'/word/update',
+            url: service_host + '/word/update',
             data: object
         }).then(function(data) {
             $scope.dictionary.alterWork.translates = [];
@@ -81,12 +97,21 @@ app.controller('AppController', function($scope, $http) {
             alert(data.data);
         })
     }
+    $scope.dictionary.edit = function(word) {
+        word.edit = !word.edit;
+        word.translates.forEach(function(item) {
+            item.edit = false;
+        });
+    };
 
     $scope.dictionary.delete = function(_id) {
-
+        var ok = confirm("Deseja mesmo deletar esse registro?");
+        if (!ok) {
+            return;
+        }
         $http({
             method: 'DELETE',
-            url: service_host+'/word/delete',
+            url: service_host + '/word/delete',
             params: { _id: _id }
         }).then(function(data) {
             load();
@@ -104,9 +129,14 @@ app.controller('AppController', function($scope, $http) {
 
             word.translate.translate = "";
             word.translate.complement = "";
+        } else {
+            alert("Campo \"Translate\" é obrigatório.")
         }
     }
 
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip()
+    })
 
 
     load();
