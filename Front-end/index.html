@@ -53,21 +53,6 @@
                              </span>
                         </div>
                         <br />
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <li>
-                                    <a href="#" ng-click="dictionary.paginar(dictionary.paginaAtual-1)" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-                                <li ng-repeat="item in dictionary.paginas"><a href="#" ng-click="dictionary.paginar(item)">{{item}}</a></li>
-                                <li>
-                                    <a href="#" ng-click="dictionary.paginar(dictionary.paginaAtual+1)" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
                         <table class="table table-sm">
 
                             <tr>
@@ -145,6 +130,21 @@
 
                         </table>
 
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li>
+                                    <a href="#" ng-click="dictionary.paginar(dictionary.paginaAtual-1)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li ng-repeat="item in dictionary.paginas"><a href="#" ng-click="dictionary.paginar(item)">{{item}}</a></li>
+                                <li>
+                                    <a href="#" ng-click="dictionary.paginar(dictionary.paginaAtual+1)" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                     <div class="col-md-2">
                     </div>
