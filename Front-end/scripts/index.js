@@ -42,6 +42,7 @@ app.controller('AppController', function($scope, $http) {
                     }
                 }
             });
+            $scope.dictionary.hide(); 
         })
     }
 
