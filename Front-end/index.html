@@ -8,6 +8,7 @@
     <script src="/bower_components/angular/angular.js"></script>
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/bower_components/linqjs/linq.js"></script>
     <script src="/scripts/index.js"></script>
 </head>
 
@@ -45,9 +46,23 @@
 
                     <div class="col-md-6">
 
-                        <h3 class="center">Aprendidas nos ultimos 7 dias</h3>
                         <br />
-                        <table class="table">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li>
+                                    <a href="#" ng-click="dictionary.paginar(dictionary.paginaAtual-1)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li ng-repeat="item in dictionary.paginas"><a href="#" ng-click="dictionary.paginar(item)">{{item}}</a></li>
+                                <li>
+                                    <a href="#" ng-click="dictionary.paginar(dictionary.paginaAtual+1)" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        <table class="table table-sm">
 
                             <tr>
                                 <th>Word</th>
@@ -56,9 +71,9 @@
                                     <span ng-click="dictionary.hide()" style="cursor:pointer" class="label label-danger">Hide</span>
                                     <span ng-click="dictionary.show()" style="cursor:pointer" class="label label-success">Show</span>
                                 </th>
-                                <th>Delete Word</th>
+                                <th>Options</th>
                             </tr>
-                            <tr clas="row" ng-repeat="word in dictionary.words">
+                            <tr clas="row" ng-repeat="word in dictionary.wordsPaginadas">
                                 <td class="col-md-3">
                                     <span ng-show="!word.edit">{{word.word}}</span>
 
@@ -74,7 +89,7 @@
                                 <td class="col-md-4">
                                     <button style="float: right;" type="button" ng-click="word.hide=!word.hide" class="btn btn-xs" ng-class="{'btn-success' : word.hide, 'btn-danger' : !word.hide }">{{word.hide? "Show":"Hide"}}</button>
                                     <div ng-show="!word.hide">
-                                        <ul>
+                                        <ul style="margin-bottom:0px">
                                             <li ng-repeat="translate in word.translates">
                                                 <span ng-show="!translate.edit" ng-click="word.edit? translate.edit = true: translate.edit = false" data-toggle="tooltip" data-placement="right" title="{{translate.complement}}">
                                                     {{translate.translate}}
@@ -90,8 +105,6 @@
                                                 </div>
                                             </li>
                                         </ul>
-
-                                        <br/>
                                         <div ng-show="word.edit">
                                             <div class="row">
                                                 <div class="panel panel-primary">
@@ -125,6 +138,7 @@
                             </tr>
 
                         </table>
+
                     </div>
                     <div class="col-md-2">
                     </div>

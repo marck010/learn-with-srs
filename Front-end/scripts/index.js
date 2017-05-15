@@ -4,6 +4,10 @@ app.controller('AppController', function($scope, $http) {
     var service_host = "http://192.168.0.110:8000";
 
     $scope.dictionary = {};
+    $scope.dictionary.registrosPorPaginas = 20;
+    $scope.dictionary.paginas = [];
+    $scope.dictionary.paginaAtual = 1;
+    $scope.dictionary.totalPaginas = 1;
     $scope.dictionary.newWord = {
         translate: {},
         translates: []
@@ -16,10 +20,44 @@ app.controller('AppController', function($scope, $http) {
     function load() {
 
         $http.get(service_host + '/word/list').then(function(data) {
+            var wordsPaginadasPaginaAtual = $scope.dictionary.wordsPaginadas;
 
             $scope.dictionary.words = data.data;
-
+            $scope.dictionary.paginar($scope.dictionary.paginaAtual);
+            $scope.dictionary.wordsPaginadas.forEach(function(item) {
+                if (wordsPaginadasPaginaAtual && wordsPaginadasPaginaAtual.length) {
+                    var word = wordsPaginadasPaginaAtual.filter(function(wordExistente) {
+                        return wordExistente._id == item._id;
+                    })[0]
+                    if (word) {
+                        item.hide = word.hide;
+                    }
+                }
+            });
         })
+    }
+
+    $scope.dictionary.paginar = function(pagina) {
+
+        if (pagina <= $scope.dictionary.totalPaginas) {
+            $scope.dictionary.paginaAtual = pagina;
+            $scope.dictionary.totalRegistros = $scope.dictionary.words.length;
+            var registrosAPular = ($scope.dictionary.paginaAtual - 1) * $scope.dictionary.registrosPorPaginas;
+            $scope.dictionary.wordsPaginadas = Enumerable.from($scope.dictionary.words)
+                .skip(registrosAPular)
+                .take($scope.dictionary.registrosPorPaginas).toArray();
+            $scope.dictionary.totalPaginas = Math.round($scope.dictionary.totalRegistros / $scope.dictionary.registrosPorPaginas);
+
+            var resto = $scope.dictionary.totalRegistros % $scope.dictionary.registrosPorPaginas;
+            if (resto > 0) {
+                $scope.dictionary.totalPaginas++;
+            }
+
+            $scope.dictionary.paginas = [];
+            for (var i = 0; i < $scope.dictionary.totalPaginas; i++) {
+                $scope.dictionary.paginas.push(i + 1);
+            }
+        }
     }
 
     $scope.dictionary.hide = function() {
@@ -99,6 +137,10 @@ app.controller('AppController', function($scope, $http) {
     }
     $scope.dictionary.edit = function(word) {
         word.edit = !word.edit;
+        if (word.edit) {
+            word.hide = false;
+        }
+
         word.translates.forEach(function(item) {
             item.edit = false;
         });
