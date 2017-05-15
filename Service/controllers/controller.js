@@ -2,7 +2,9 @@
     var controller = {};
 
     controller.list = function(req, res, next) {
-        service.list(req.filter).then(function(docs) {
+        var filter = req.query.filter ? JSON.parse(req.query.filter) : {};
+        service.list(filter).then(function(docs) {
+
             docs.forEach(function(doc) {
                 if (doc._doc.date) {
                     doc._doc.date = doc._doc.date.toLocaleDateString();

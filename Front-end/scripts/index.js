@@ -17,12 +17,20 @@ app.controller('AppController', function($scope, $http) {
         translates: []
     };
 
-    function load() {
-
-        $http.get(service_host + '/word/list').then(function(data) {
+    $scope.dictionary.load = function() {
+        if ($scope.dictionary.filtro) {
+            var filtro = $scope.dictionary.filtro;
+            var filter = {
+                filter: { $or: [
+                    { word: { $regex: ".*" + filtro + ".*" } }, 
+                    { "translates.translate": { $regex: ".*" + filtro + ".*" } }, 
+                    { "translates.complement": { $regex: ".*" + filtro + ".*" } }] }
+            }
+        }
+        $http({ method: "GET", url: service_host + '/word/list', params: filter }).then(function(data) {
             var wordsPaginadasPaginaAtual = $scope.dictionary.wordsPaginadas;
-
             $scope.dictionary.words = data.data;
+            $scope.dictionary.paginaAtual = 1;
             $scope.dictionary.paginar($scope.dictionary.paginaAtual);
             $scope.dictionary.wordsPaginadas.forEach(function(item) {
                 if (wordsPaginadasPaginaAtual && wordsPaginadasPaginaAtual.length) {
@@ -106,7 +114,7 @@ app.controller('AppController', function($scope, $http) {
         }).then(function(data) {
             $scope.dictionary.word = "";
             $scope.dictionary.newWord.translates = [];
-            load();
+            $scope.dictionary.load();
         }).catch(function(data) {
             alert(data)
         })
@@ -130,7 +138,7 @@ app.controller('AppController', function($scope, $http) {
             $scope.dictionary.alterWork.translates = [];
             word.edit = true;
 
-            load();
+            $scope.dictionary.load();
         }).catch(function(data) {
             alert(data.data);
         })
@@ -156,7 +164,7 @@ app.controller('AppController', function($scope, $http) {
             url: service_host + '/word/delete',
             params: { _id: _id }
         }).then(function(data) {
-            load();
+            $scope.dictionary.load();
         }).catch(function(data) {
             alert(data.data)
         })
@@ -181,5 +189,5 @@ app.controller('AppController', function($scope, $http) {
     })
 
 
-    load();
+    $scope.dictionary.load();
 })
