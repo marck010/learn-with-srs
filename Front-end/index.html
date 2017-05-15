@@ -32,7 +32,6 @@
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </div>
-            <!--/.nav-collapse -->
         </div>
     </nav>
 
@@ -92,7 +91,7 @@
                                 <th>Options</th>
                             </tr>
                             <tr clas="row" ng-repeat="word in dictionary.wordsPaginadas">
-                                <td class="col-md-3">
+                                <td class="col-md-2">
                                     <span ng-show="!word.edit">{{word.word}}</span>
 
                                     <div ng-show="word.edit">
@@ -149,9 +148,10 @@
 
 
                                 </td>
-                                <td class="col-md-3">
-                                    <button type="button" ng-click="dictionary.delete(word._id)" class="btn btn-danger btn-xs">Excluir</button>
-                                    <button type="button" ng-click="dictionary.edit(word)" class="btn btn-primary btn-xs"> Editar</button>
+                                <td class="col-md-4">
+                                    <button type="button" ng-click="dictionary.delete(word._id)" class="btn btn-danger btn-xs">Delete</button>
+                                    <button type="button" ng-click="dictionary.edit(word)" class="btn btn-primary btn-xs"> Edit</button>
+                                    <button type="button" ng-click="dictionary.update(word)" class="btn btn-primary btn-xs"> Up</button>
                                 </td>
                             </tr>
 
@@ -173,9 +173,7 @@
                             </ul>
                         </nav>
                     </div>
- 
                 </div>
-
             </div>
         </div>
     </div>
