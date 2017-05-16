@@ -3,6 +3,7 @@ var model = require('../models/word-model.js');
 var ServicoWord = {};
 
 ServicoWord.insert = function(object) {
+    object.learned = false;
     object.date = new Date();
     return model.create(object);
 }
