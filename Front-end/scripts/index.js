@@ -191,14 +191,15 @@ app.controller('AppController', function($scope, $http) {
         }
 
         _self.search = function() {
-            //_self.pagination.atualPage = 1;
 
             if (_self.query.word) {
                 filter.filter["$or"] = [
-                    { word: { $regex: ".*" + _self.query.word + ".*" } },
-                    { "translates.translate": { $regex: ".*" + _self.query.word + ".*" } },
-                    { "translates.complement": { $regex: ".*" + _self.query.word + ".*" } }
+                    { word: { $regex: ".*" + _self.query.word + ".*", '$options': 'i' } },
+                    { "translates.translate": { $regex: ".*" + _self.query.word + ".*", '$options': 'i' } },
+                    { "translates.complement": { $regex: ".*" + _self.query.word + ".*", '$options': 'i' } }
                 ]
+            } else {
+                delete filter.filter["$or"];
             }
 
             request().then(function(data) {
@@ -249,7 +250,11 @@ app.controller('AppController', function($scope, $http) {
                 grid.listPagined = Enumerable.from(grid.list)
                     .skip(_self.itemsToTake)
                     .take(_self.itemsPerPages).toArray();
-                _self.totalPages = Math.round(_self.totalItems / _self.itemsPerPages);
+                if (_self.totalItems <= _self.itemsPerPages) {
+                    _self.totalPages = 1;
+                } else {
+                    _self.totalPages = Math.round(_self.totalItems / _self.itemsPerPages);
+                }
 
                 _self.pages = [];
                 for (var i = 0; i < _self.totalPages; i++) {
