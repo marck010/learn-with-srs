@@ -1,7 +1,7 @@
 var app = angular.module('App', []);
 
 app.controller('AppController', function($scope, $http) {
-    var service_host = "http://192.168.0.110:8000";
+    var service_host = "http://172.18.0.1:8000";
 
     var Crud = function(dictionary) {
 
