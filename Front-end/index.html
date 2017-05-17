@@ -47,7 +47,7 @@
                                 <div class="input-group">
                                     <input ng-model="dictionary.grid.wordsLearneds.query.word" type="text" class="form-control" placeholder="Search for...">
                                     <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="dictionary.grid.wordsLearneds.search()">Go!</button>
+                                <button class="btn btn-default" type="button" ng-click="dictionary.grid.wordsLearneds.pagination.atualPage = 1; dictionary.grid.wordsLearneds.search()">Go!</button>
                              </span>
                                 </div>
                             </div>
@@ -194,7 +194,7 @@
                                 <div class="input-group">
                                     <input ng-model="dictionary.grid.wordsToLearn.query.word" type="text" class="form-control" placeholder="Search for...">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="dictionary.grid.wordsToLearn.search()">Go!</button>
+                                        <button class="btn btn-default" type="button" ng-click="dictionary.grid.wordsToLearn.pagination.atualPage = 1; dictionary.grid.wordsToLearn.search()">Go!</button>
                                     </span>
                                 </div>
                             </div>
