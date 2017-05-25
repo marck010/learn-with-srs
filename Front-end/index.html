@@ -45,10 +45,7 @@
 
                             <div class="panel-body">
                                 <div class="input-group">
-                                    <input ng-model="dictionary.grid.wordsLearneds.query.word" type="text" class="form-control" placeholder="Search for...">
-                                    <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" ng-click="dictionary.grid.wordsLearneds.pagination.atualPage = 1; dictionary.grid.wordsLearneds.search()">Go!</button>
-                             </span>
+                                    <input ng-model="dictionary.grid.wordsLearneds.query.word" ng-change="dictionary.grid.wordsLearneds.pagination.atualPage = 1; dictionary.grid.wordsLearneds.search()" type="text" class="form-control" placeholder="Search for...">
                                 </div>
                             </div>
 
@@ -192,10 +189,7 @@
 
                             <div class="panel-body">
                                 <div class="input-group">
-                                    <input ng-model="dictionary.grid.wordsToLearn.query.word" type="text" class="form-control" placeholder="Search for...">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" ng-click="dictionary.grid.wordsToLearn.pagination.atualPage = 1; dictionary.grid.wordsToLearn.search()">Go!</button>
-                                    </span>
+                                    <input ng-model="dictionary.grid.wordsToLearn.query.word" ng-change="dictionary.grid.wordsToLearn.pagination.atualPage = 1; dictionary.grid.wordsToLearn.search()" type="text" class="form-control" placeholder="Search for...">
                                 </div>
                             </div>
                             <table class="table table-sm">
@@ -274,13 +268,13 @@
                                         <button type="button" ng-click="dictionary.crud.delete(word._id, dictionary.grid.wordsToLearn)" class="btn btn-danger btn-xs">
                                             <span class="glyphicon glyphicon-remove"></span>
                                         </button>
-                                            <button type="button" ng-click="dictionary.crud.edit(word)" class="btn btn-primary btn-xs">
+                                        <button type="button" ng-click="dictionary.crud.edit(word)" class="btn btn-primary btn-xs">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </button>
-                                            <button type="button" ng-click="dictionary.crud.update(word, dictionary.grid.wordsToLearn)" class="btn btn-warning btn-xs">
+                                        <button type="button" ng-click="dictionary.crud.update(word, dictionary.grid.wordsToLearn)" class="btn btn-warning btn-xs">
                                             <span class="glyphicon glyphicon-upload"> </span>
                                         </button>
-                                            <button type="button" ng-click="dictionary.crud.setLearned(word)" class="btn btn-success btn-xs">
+                                        <button type="button" ng-click="dictionary.crud.setLearned(word)" class="btn btn-success btn-xs">
                                             <span  class="glyphicon glyphicon-thumbs-up"> </span>
                                         </button>
                                     </td>

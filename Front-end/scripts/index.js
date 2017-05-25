@@ -39,6 +39,9 @@ app.controller('AppController', function($scope, $http) {
             }
 
             if (!object.obj.word || !translateValid) {
+                if (!object.obj.word) {
+                    object.obj.translates = [];
+                }
                 alert("Dados invalidos.");
                 return;
             }
