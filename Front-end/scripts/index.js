@@ -61,6 +61,17 @@ app.controller('AppController', function($scope, $http) {
 
         _self.update = function(word, grid) {
 
+            var translatesValidos = word.translates.filter(function(item) {
+                return !!item.translate;
+            });
+
+            word.translates = translatesValidos;
+
+            if(!word.translates.length){
+                alert("Dados inválidos.")
+                return ;
+            }
+
             var object = {
                 obj: {
                     _id: word._id,
