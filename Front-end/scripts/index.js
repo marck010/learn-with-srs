@@ -67,9 +67,9 @@ app.controller('AppController', function($scope, $http) {
 
             word.translates = translatesValidos;
 
-            if(!word.translates.length){
+            if (!word.translates.length) {
                 alert("Dados inválidos.")
-                return ;
+                return;
             }
 
             var object = {
@@ -204,13 +204,13 @@ app.controller('AppController', function($scope, $http) {
             return $http({ method: "GET", url: service_host + '/word/list', params: filter });
         }
 
-        _self.search = function() {
+        _self.search = function(word) {
 
-            if (_self.query.word) {
+            if (word) {
                 filter.filter["$or"] = [
-                    { word: { $regex: ".*" + _self.query.word + ".*", '$options': 'i' } },
-                    { "translates.translate": { $regex: ".*" + _self.query.word + ".*", '$options': 'i' } },
-                    { "translates.complement": { $regex: ".*" + _self.query.word + ".*", '$options': 'i' } }
+                    { word: { $regex: ".*" + word + ".*", '$options': 'i' } },
+                    { "translates.translate": { $regex: ".*" + word + ".*", '$options': 'i' } },
+                    { "translates.complement": { $regex: ".*" + word + ".*", '$options': 'i' } }
                 ]
             } else {
                 delete filter.filter["$or"];
@@ -287,12 +287,20 @@ app.controller('AppController', function($scope, $http) {
 
         _self.crud = new Crud(_self);
         _self.grid = {};
+        _self.filter = {};
         _self.grid.wordsLearneds = new Grid(paginationLeaners, true);
         _self.grid.wordsToLearn = new Grid(paginationToLearn, false);
         _self.updateData = function() {
 
             _self.grid.wordsLearneds.search();
             _self.grid.wordsToLearn.search();
+        }
+
+        _self.search = function() {
+            _self.grid.wordsLearneds.pagination.atualPage = 1;
+            _self.grid.wordsLearneds.search(_self.filter.word )
+            _self.grid.wordsToLearn.pagination.atualPage = 1;
+            _self.grid.wordsToLearn.search(_self.filter.word )
         }
 
     }
