@@ -5,11 +5,15 @@
     <meta charset="utf-8">
     <title>Dictionary</title>
     <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel='stylesheet prefetch' href='https://netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.min.css'>
     <script src="/bower_components/angular/angular.js"></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-sanitize.min.js'></script>
     <script src="/bower_components/jquery/dist/jquery.js"></script>
     <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/bower_components/linqjs/linq.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.1.2/textAngular.min.js'></script>
     <script src="/scripts/index.js"></script>
+
 </head>
 
 <body>
@@ -40,10 +44,43 @@
                 <br />
                 <br />
                 <br />
-                <br />
-
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-12">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <form>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" ng-model="dictionary.crud.lesson.word" placeholder="Title">
+                                    </div>
+                                    <div class="panel panel-primary">
+                                        <div class="panel-body">
+                                            <div class="form-group">
+                                                <div text-angular="text-angular" name="htmlcontent" ng-model="dictionary.crud.lesson.description"></div>
+                                            </div>
+                                            <button type="button" ng-click="dictionary.crud.add(dictionary.crud.lesson)" style: "height: 50px;" class="btn btn-default dropdown-toggle">+</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-offset-11">
+                                        <button type="button" ng-click="dictionary.crud.atualizarInserir()" style: "height: 50px; float: right" class="btn btn-default">Submit</button>
+                                    </div>
+                                    </br>
+
+                                </form>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input ng-model="dictionary.filter.word" ng-change="dictionary.search()" type="text" class="form-control" placeholder="Search for...">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
 
                         <div class="row panel panel-default">
                             <div class="panel-heading">Learned - Total {{dictionary.grid.wordsLearneds.pagination.totalItems}}</div>
@@ -70,12 +107,6 @@
 
                                         <span ng-show="!word.edit"><strong>{{word.word}}</strong></span>
 
-                                        <div ng-show="word.edit">
-                                            <div class="form-group">
-                                                <input class="form-control" type="text" ng-model="word.word">
-                                            </div>
-                                        </div>
-
                                         <div ng-show="!word.hide">
                                             <ul style="margin-bottom:0px">
                                                 <li ng-repeat="translate in word.translates">
@@ -83,38 +114,8 @@
                                                         {{!translate.complement? translate.translate : translate.translate +" - "+ translate.complement}}
                                                     </span>
 
-                                                    <div ng-show="translate.edit && word.edit">
-                                                        <div class="form-group">
-                                                            <textarea class="form-control" ng-model="translate.translate"></textarea>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <textarea class="form-control" ng-model="translate.complement"></textarea>
-                                                        </div>
-                                                    </div>
                                                 </li>
                                             </ul>
-                                            <div ng-show="word.edit">
-                                                <div class="row">
-                                                    <div class="panel panel-primary">
-                                                        <div class="panel-body">
-                                                            <div class="form-group">
-                                                                <input class="form-control" type="text" ng-model="dictionary.crud.alter.translate.translate">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <textarea class="form-control" ng-model="dictionary.crud.alter.translate.complement"></textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <button type="button" ng-click="word.translate = dictionary.crud.alter.translate; dictionary.crud.add(word);" class="btn btn-default">+</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-md-2 col-md-offset-9">
-                                                        <button type="button" ng-click="dictionary.crud.update(word, dictionary.grid.wordsLearneds)" class="btn btn-default">OK</button>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </td>
                                     <td class="col-md-3">
@@ -150,54 +151,8 @@
                             </nav>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div class="row">
-                            <div class="col-md-2"></div>
-                            <div class="col-md-8">
-                                <div class="panel panel-primary">
-                                    <div class="panel-footer">Search</div>
-                                    <div class="panel-body">
-                                        <input ng-model="dictionary.filter.word" ng-change="dictionary.search()" type="text" class="form-control" placeholder="Search for...">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2"></div>
-                        </div>
-                        <div class="row">
-
-                            <div class="col-md-2">
-                            </div>
-                            <div class="col-md-8">
-                                <form>
-                                    <div class="panel panel-primary">
-                                        <div class="panel-footer">Translates</div>
-                                        <div class="panel-body">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" ng-model="dictionary.crud.new.word" placeholder="Title">
-                                            </div>
-                                            <div class="panel panel-primary">
-                                                <div class="panel-body">
-                                                    <div class="form-group">
-                                                        <textarea class="form-control" style="height: 50px;" ng-model="dictionary.crud.new.translate.translate" placeholder="Explanation"></textarea>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <textarea class="form-control" style="height: 50px;" ng-model="dictionary.crud.new.translate.complement" placeholder="Exemples"> </textarea>
-                                                    </div>
-                                                    <button type="button" ng-click="dictionary.crud.add(dictionary.crud.new)" style: "height: 50px;" class="btn btn-default dropdown-toggle">+</button>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    <button type="button" ng-click="dictionary.crud.insert()" style: "height: 50px; float: right" class="btn btn-default">Submit</button>
-
-                                </form>
-                            </div>
-                            <div class="col-md-2"></div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
+                  
+                    <div class="col-md-6">
 
                         <div class="row panel panel-default">
                             <div class="panel-heading">To Learned - Total {{dictionary.grid.wordsToLearn.pagination.totalItems}}</div>
@@ -225,18 +180,14 @@
 
                                         <span ng-show="!word.edit"><strong>{{word.word}}</strong> </span>
 
-                                        <div ng-show="word.edit">
-                                            <div class="form-group">
-                                                <input class="form-control" type="text" ng-model="word.word">
-                                            </div>
-                                        </div>
-
                                         <div ng-show="!word.hide">
                                             <ul style="margin-bottom:0px">
+                                                <span ng-show="!translate.edit" ng-click="dictionary.crud.editTranslate(word, translate)" ng-bind-html="word.description" data-toggle="tooltip" data-placement="right">
+                                                </span>
+                                                
+                                            <!--
                                                 <li ng-repeat="translate in word.translates">
-                                                    <span ng-show="!translate.edit" ng-click="word.edit? translate.edit = true: translate.edit = false" data-toggle="tooltip" data-placement="right">
-                                                         {{!translate.complement? translate.translate : translate.translate +" - "+ translate.complement}}
-                                                    </span>
+
 
                                                     <div ng-show="translate.edit && word.edit">
                                                         <div class="form-group">
@@ -246,8 +197,8 @@
                                                             <textarea class="form-control" ng-model="translate.complement"></textarea>
                                                         </div>
                                                     </div>
-                                                </li>
-                                            </ul>
+                                                </li>-->
+                                                <!--</ul>
                                             <div ng-show="word.edit">
                                                 <div class="row">
                                                     <div class="col-md-12">
@@ -271,7 +222,7 @@
                                                         <button type="button" ng-click="dictionary.crud.update(word, dictionary.grid.wordsToLearn)" class="btn btn-default">OK</button>
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                         </div>
                                     </td>
                                     <td class="col-md-4">
@@ -281,7 +232,7 @@
                                         <button type="button" ng-click="dictionary.crud.edit(word)" class="btn btn-primary btn-xs">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </button>
-                                        <button type="button" ng-click="dictionary.crud.update(word, dictionary.grid.wordsToLearn)" class="btn btn-warning btn-xs">
+                                        <button type="button" ng-click="dictionary.crud.update(word)" class="btn btn-warning btn-xs">
                                             <span class="glyphicon glyphicon-upload"> </span>
                                         </button>
                                         <button type="button" ng-click="dictionary.crud.setLearned(word)" class="btn btn-success btn-xs">
@@ -316,12 +267,16 @@
         </div>
 </body>
 <style>
-    .container {
-        width: 1700px;
-    }
-    
     button.selected {
         background-color: #e6e6e6
+    }
+    
+    .ta-editor {
+        min-height: 300px;
+        height: auto;
+        overflow: auto;
+        font-family: inherit;
+        font-size: 100%;
     }
 </style>
 

@@ -6,7 +6,7 @@ var schema = new mongoose.Schema({
     learned: { type: Boolean, require: true },
     date: { type: Date, require: true },
     translates: [{
-        translate: { type: String, require: true },
+        translate: { type: String },
         complement: String
     }]
 

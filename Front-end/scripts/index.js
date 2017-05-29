@@ -1,4 +1,8 @@
-var app = angular.module('App', []);
+var app = angular.module('App', ['textAngular']);
+
+function wysiwygeditor($scope) {
+
+};
 
 app.controller('AppController', function($scope, $http) {
     var service_host = "http://172.18.0.1:8000";
@@ -8,6 +12,11 @@ app.controller('AppController', function($scope, $http) {
         var _self = this;
 
         _self.dictionary = dictionary;
+
+        _self.lesson = {
+            translate: {},
+            translates: []
+        };
 
         _self.new = {
             translate: {},
@@ -19,29 +28,25 @@ app.controller('AppController', function($scope, $http) {
             translates: []
         };
 
+        _self.atualizarInserir = function() {
+            if (!!_self.lesson._id) {
+                _self.update(_self.lesson);
+            } else {
+                _self.insert();
+            }
+        }
+
         _self.insert = function() {
 
             var object = {
                 obj: {
-                    word: _self.new.word,
-                    translates: _self.new.translates
+                    word: _self.lesson.word,
+                    description: _self.lesson.description,
+                    translates: _self.lesson.translates
                 }
             }
 
-            var translateValid = false;
-
-            if (object.obj.translates.length > 0) {
-                translatesValidos = object.obj.translates.filter(function(item) {
-                    return !!item.translate;
-                });
-
-                translateValid = translatesValidos.length > 0;
-            }
-
-            if (!object.obj.word || !translateValid) {
-                if (!object.obj.word) {
-                    object.obj.translates = [];
-                }
+            if (!object.obj.word || !object.obj.description) {
                 alert("Dados invalidos.");
                 return;
             }
@@ -51,32 +56,27 @@ app.controller('AppController', function($scope, $http) {
                 url: service_host + '/word/insert',
                 data: object
             }).then(function(data) {
-                _self.new.word = "";
-                _self.new.translates = [];
+                _self.lesson.word = "";
+                _self.lesson.description = "";
                 _self.dictionary.updateData();
             }).catch(function(data) {
                 alert(data)
             })
         };
 
-        _self.update = function(word, grid) {
+        _self.update = function(lesson) {
 
-            var translatesValidos = word.translates.filter(function(item) {
-                return !!item.translate;
-            });
-
-            word.translates = translatesValidos;
-
-            if (!word.translates.length) {
+            if (!lesson.description || !lesson.word) {
                 alert("Dados inválidos.")
                 return;
             }
 
             var object = {
                 obj: {
-                    _id: word._id,
-                    word: word.word,
-                    translates: word.translates
+                    _id: lesson._id,
+                    word: lesson.word,
+                    description: lesson.description,
+                    translates: lesson.translates
                 }
             }
 
@@ -85,23 +85,18 @@ app.controller('AppController', function($scope, $http) {
                 url: service_host + '/word/update',
                 data: object
             }).then(function(data) {
-                _self.alter.translates = [];
-                word.edit = false;
-                grid.search();
+                _self.lesson.word = "";
+                _self.lesson.description = "";
+                _self.dictionary.updateData();
             }).catch(function(data) {
                 alert(data.data);
             })
         };
 
         _self.edit = function(word) {
-            word.edit = !word.edit;
-            if (word.edit) {
-                word.hide = false;
-            }
-
-            word.translates.forEach(function(item) {
-                item.edit = false;
-            });
+            _self.lesson._id = word._id;
+            _self.lesson.word = word.word;
+            _self.lesson.description = word.description;
         };
 
         _self.delete = function(_id, grid) {
@@ -286,21 +281,23 @@ app.controller('AppController', function($scope, $http) {
         var paginationLeaners = new Pagination();
 
         _self.crud = new Crud(_self);
-        _self.grid = {};
         _self.filter = {};
-        _self.grid.wordsLearneds = new Grid(paginationLeaners, true);
-        _self.grid.wordsToLearn = new Grid(paginationToLearn, false);
-        _self.updateData = function() {
 
+        _self.grid = {
+            wordsLearneds: new Grid(paginationLeaners, true),
+            wordsToLearn: new Grid(paginationToLearn, false)
+        };
+
+        _self.updateData = function() {
             _self.grid.wordsLearneds.search();
             _self.grid.wordsToLearn.search();
         }
 
         _self.search = function() {
             _self.grid.wordsLearneds.pagination.atualPage = 1;
-            _self.grid.wordsLearneds.search(_self.filter.word )
+            _self.grid.wordsLearneds.search(_self.filter.word)
             _self.grid.wordsToLearn.pagination.atualPage = 1;
-            _self.grid.wordsToLearn.search(_self.filter.word )
+            _self.grid.wordsToLearn.search(_self.filter.word)
         }
 
     }
