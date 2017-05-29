@@ -70,18 +70,11 @@
                             </div>
                         </div>
 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <input ng-model="dictionary.filter.word" ng-change="dictionary.search()" type="text" class="form-control" placeholder="Search for...">
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
 
+                    <div class="col-md-5">
                         <div class="row panel panel-default">
                             <div class="panel-heading">Learned - Total {{dictionary.grid.wordsLearneds.pagination.totalItems}}</div>
 
@@ -105,17 +98,12 @@
                                             <span ng-show="word.hide"  class="glyphicon glyphicon-eye-close"> </span>
                                         </button>
 
-                                        <span ng-show="!word.edit"><strong>{{word.word}}</strong></span>
+                                        <span><strong>{{word.word}}</strong></span>
 
                                         <div ng-show="!word.hide">
                                             <ul style="margin-bottom:0px">
-                                                <li ng-repeat="translate in word.translates">
-                                                    <span ng-show="!translate.edit" ng-click="word.edit? translate.edit = true: translate.edit = false" data-toggle="tooltip" data-placement="right">
-                                                        {{!translate.complement? translate.translate : translate.translate +" - "+ translate.complement}}
-                                                    </span>
-
-                                                </li>
-                                            </ul>
+                                                <span ng-show="!translate.edit" ng-bind-html="word.description" data-toggle="tooltip" data-placement="right">
+                                                </span>
                                         </div>
                                     </td>
                                     <td class="col-md-3">
@@ -151,8 +139,12 @@
                             </nav>
                         </div>
                     </div>
-                  
-                    <div class="col-md-6">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <input ng-model="dictionary.filter.word" ng-change="dictionary.search()" type="text" class="form-control" placeholder="Search for...">
+                        </div>
+                    </div>
+                    <div class="col-md-5">
 
                         <div class="row panel panel-default">
                             <div class="panel-heading">To Learned - Total {{dictionary.grid.wordsToLearn.pagination.totalItems}}</div>
@@ -178,11 +170,11 @@
                                             <span ng-show="word.hide"  class="glyphicon glyphicon-eye-close"> </span>
                                         </button>
 
-                                        <span ng-show="!word.edit"><strong>{{word.word}}</strong> </span>
+                                        <span><strong>{{word.word}}</strong> </span>
 
                                         <div ng-show="!word.hide">
                                             <ul style="margin-bottom:0px">
-                                                <span ng-show="!translate.edit" ng-click="dictionary.crud.editTranslate(word, translate)" ng-bind-html="word.description" data-toggle="tooltip" data-placement="right">
+                                                <span ng-show="!translate.edit" ng-bind-html="word.description" data-toggle="tooltip" data-placement="right">
                                                 </span>
                                         </div>
                                     </td>
@@ -228,6 +220,10 @@
         </div>
 </body>
 <style>
+    .container {
+        width: 1500px;
+    }
+    
     button.selected {
         background-color: #e6e6e6
     }
