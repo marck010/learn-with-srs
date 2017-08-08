@@ -56,6 +56,7 @@ app.controller('AppController', function($scope, $http) {
                 url: service_host + '/word/insert',
                 data: object
             }).then(function(data) {
+                _self.lesson._id = "";
                 _self.lesson.word = "";
                 _self.lesson.description = "";
                 _self.dictionary.updateData();
