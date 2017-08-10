@@ -17,8 +17,11 @@ app.use(function(req, res, next) {
         var user = process.env.USER_DB || 'marck010';
         var password = process.env.PASS_DB || '1232017';
 
-        console.log(server)
-        mongoose.connect('mongodb://'+ user+":"+password+'@'+server+'/dictionary', function(error) {
+        console.log(server);
+        console.log(user);
+        console.log(password);
+
+        mongoose.connect('mongodb://' + user + ":" + password + '@' + server + '/dictionary', function(error) {
             if (error) {
                 next(error)
                 console.log(error);
