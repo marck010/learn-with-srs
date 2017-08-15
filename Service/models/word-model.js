@@ -5,10 +5,8 @@ var schema = new mongoose.Schema({
     description: { type: String, require: true },
     learned: { type: Boolean, require: true },
     date: { type: Date, require: true },
-    translates: [{
-        translate: { type: String },
-        complement: String
-    }]
+    active: { type: Boolean, require: true },
+    wordRelated: { type: String, require: false }
 
 })
 

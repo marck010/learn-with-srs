@@ -5,12 +5,26 @@ var ServicoWord = {};
 ServicoWord.insert = function(object) {
     object.learned = false;
     object.date = new Date();
+    object.active = true;
     return model.create(object);
 }
 
 ServicoWord.update = function(object) {
-    object.date = new Date();
-    return model.findByIdAndUpdate(object._id, object)
+
+    return model.findById(object._id).then(function(word) {
+
+        word.active = false;
+        return model.update({ _id: object._id }, word);
+
+    }).then(function() {
+        object.learned = false;
+        object.date = new Date();
+        object.active = true;
+        object.wordRelated = object._id;
+        delete object._id;
+        return model.create(object);
+
+    })
 }
 
 ServicoWord.delete = function(id) {
@@ -18,7 +32,8 @@ ServicoWord.delete = function(id) {
 }
 
 ServicoWord.list = function(filtro) {
-    return model.find(filtro).sort({date:-1});
+    filtro.active = true;
+    return model.find(filtro).sort({ date: -1 });
 }
 
 module.exports = ServicoWord;

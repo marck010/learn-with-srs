@@ -263,7 +263,8 @@ app.controller('AppController', function($scope, $http) {
                 if (_self.totalItems <= _self.itemsPerPages) {
                     _self.totalPages = 1;
                 } else {
-                    _self.totalPages = Math.round(_self.totalItems / _self.itemsPerPages);
+                    _self.totalPages = parseInt(_self.totalItems / _self.itemsPerPages);
+                    _self.totalPages = (_self.totalItems % _self.itemsPerPages) > 0 ? _self.totalPages + 1 : _self.totalPages
                 }
 
                 _self.pages = [];
