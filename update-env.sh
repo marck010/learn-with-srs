@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# # Buildar imagem do banco e recriar
-# sudo docker stop dictionary-database   
-# sudo docker rm dictionary-database   
-# sudo docker run -e "TZ=America/Sao_Paulo" --name dictionary-database -p 25017:27017 -v `pwd`/Database/data:/data/db -d mongo:latest
-
-
 #Buildar imagem do serviço e recriar
 sudo docker build -t dictionary-service ./Service
 sudo docker stop dictionary-service   
