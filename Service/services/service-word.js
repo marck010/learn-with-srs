@@ -11,29 +11,76 @@ ServicoWord.insert = function(object) {
 
 ServicoWord.update = function(object) {
 
+    var objectToSave;
+
     return model.findById(object._id).then(function(word) {
 
-        word.active = false;
-        return model.update({ _id: object._id }, word);
+        objectToSave = word._doc;
 
-    }).then(function() {
-        object.learned = false;
         object.date = new Date();
         object.active = true;
-        object.wordRelated = object._id;
-        delete object._id;
-        return model.create(object);
+
+        return new Promise(function(resolve, reject) {
+            model.update({ _id: object._id }, object, function(error, doc) {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve(doc);
+            });
+
+        })
+
+    }).then(function() {
+
+        objectToSave.active = false;
+        objectToSave.wordRelated = object._id;
+        delete objectToSave._id;
+        return new Promise(function(resolve, reject) {
+            model.create(objectToSave, function(error, doc) {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+                resolve(doc);
+            });
+        })
+
 
     })
 }
 
 ServicoWord.delete = function(id) {
-    return model.remove({ _id: id })
+    return new Promise(function(resolve, reject) {
+
+        model.remove({ _id: id }, function(error, doc) {
+            if (error) {
+                reject(error);
+                return;
+            }
+            resolve(doc);
+        });
+
+    });
+
 }
 
 ServicoWord.list = function(filtro) {
+
     filtro.active = true;
-    return model.find(filtro).sort({ date: -1 });
+    return new Promise(function(resolve, reject) {
+
+        model.find(filtro, function(error, doc) {
+
+            if (error) {
+                reject(error);
+                return;
+            }
+
+            resolve(doc);
+        }).sort({ date: -1 });
+
+    });
 }
 
 module.exports = ServicoWord;
